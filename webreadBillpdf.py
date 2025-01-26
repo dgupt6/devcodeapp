@@ -89,7 +89,7 @@ def deriveActualAmt(dflocal):
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(281) 710-7794", "Sri Spousex7794")
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(713) 859-6667", "Srix6667")
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(623) 628-0940", "Bireswarx0940")
-    dflocal["Phone Number"] = dflocal["Phone Number"].replace("(512) 906-6312", "Kaustabhx6312")
+    dflocal["Phone Number"] = dflocal["Phone Number"].replace("(512) 906-6312", "Kaustubhx6312")
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(623) 759-2902", "Atri spousex2902")
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(623) 986-7834", "Atrix7834")
 
@@ -120,7 +120,7 @@ def deriveActualAmt(dflocal):
         "Sri" if "Sri" in x else
         "Bireswar" if "Bireswar" in x else
         "Atri" if "Atri" in x else
-        "Koustabh" if "Koustabh" in x else
+        "Kaustubh" if "Kaustubh" in x else
         None
     )
 
