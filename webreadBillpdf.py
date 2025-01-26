@@ -89,7 +89,7 @@ def deriveActualAmt(dflocal):
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(281) 710-7794", "Sri Spousex7794")
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(713) 859-6667", "Srix6667")
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(623) 628-0940", "Bireswarx0940")
-    dflocal["Phone Number"] = dflocal["Phone Number"].replace("(512) 906-6312", "Koustabhx6312")
+    dflocal["Phone Number"] = dflocal["Phone Number"].replace("(512) 906-6312", "Kaustabhx6312")
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(623) 759-2902", "Atri spousex2902")
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(623) 986-7834", "Atrix7834")
 
@@ -175,8 +175,8 @@ def send_email(subject, body):
     msg = EmailMessage()
     msg['Subject'] = subject
     msg['From'] = from_email
-    msg['To'] = to_address_list
-    # msg['To'] = main_address_list
+    #msg['To'] = to_address_list
+    msg['To'] = main_address_list
     msg.set_content(body)
 
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
