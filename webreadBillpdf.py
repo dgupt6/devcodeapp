@@ -97,9 +97,6 @@ def deriveActualAmt(dflocal):
     actlvl_charge = float(ny_rows['Total'].to_string(index=False))
 
     line_charges = dflocal[dflocal["Phone Number"] != "Account"]["Plans"].tolist()
-    # persons = dflocal[dflocal["Phone Number"] != "Account"]["Phone Number"].tolist()
-    # equipment = dflocal[dflocal["Phone Number"] != "Account"]["Equipment"].tolist()
-    # line_total = dflocal[dflocal["Phone Number"] != "Account"]["Total"].tolist()
 
     sum_linecharges = 0
     num_of_line = 0
@@ -132,11 +129,6 @@ def deriveActualAmt(dflocal):
 
     # Aggregate Total by Group
     resultdf = df_grouped.groupby("Person", as_index=False).agg({"Individual amount": "sum"})
-
-    # sumofindividualamt = resultdf['Individual amount'].sum()
-    # new_row = {'Person': 'Total', 'Individual amount': sumofindividualamt}
-    # resultdf.loc[len(resultdf)] = new_row
-
     return resultdf
 
 
@@ -193,7 +185,6 @@ def send_email(subject, body):
 
 # Validate whether amount is in exceptable limit
 def validateAndSend(billamtDF, totalBill, TotalfromPersons):
-    # TotalfromPersons= billamtDF['Individual amount'].iloc[5]
     diff = abs(TotalfromPersons - totalBill)
     diff_flag = False
     if diff < 0.05:
@@ -204,7 +195,6 @@ def validateAndSend(billamtDF, totalBill, TotalfromPersons):
     # Save CSV logic
     savecsvvar = st.text_input("Save CSV? (Y/N): ")
     if savecsvvar.upper() == 'Y':
-        #billamtDF.to_csv("/Users/devrajgupta/Documents/Expense/TMobileRelated/TmobileBillAmt.csv", index=False)
         csv=billamtDF.to_csv(index=False)
         st.write("Preview of the CSV file:")
         st.dataframe(billamtDF)
@@ -248,7 +238,6 @@ if __name__ == "__main__":
                 f"Total Individual Amount : {sumofindividualamt}")  # this is important print for validation. Keep it.
             st.write(f"Total Bill Stmt Amount : {totalBill}")  # this is important print for validation. Keep it.
             validateAndSend(billamtDF, totalBill, sumofindividualamt)
-            #print("App is running good (RC 0)")
         else:
             emailsendflag = False
             st.stop()
@@ -260,4 +249,3 @@ if __name__ == "__main__":
         subject = "Pay T-mobile Bill : Error"
         body = "Error in generation of bill details. Devraj is checking"
         send_email(subject, body)
-        #print("App ran into error (RC 1)")
