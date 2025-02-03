@@ -12,3 +12,4 @@ protobuf
 hnswlib
 python-dotenv
 requests
+faiss-cpu

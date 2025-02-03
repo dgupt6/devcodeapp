@@ -4,16 +4,15 @@ import requests
 import tempfile
 import textwrap
 import streamlit as st
-import chromadb
 from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_chroma import Chroma
 from langchain.prompts import ChatPromptTemplate
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 from langchain_anthropic import ChatAnthropic
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_community.vectorstores import FAISS
 
 class Config:
     CHUNK_SIZE = 200
@@ -212,8 +211,8 @@ class CodeReviewer:
 
         return pdf_path
     def setup_vector_store(self):
-        chromadb.api.client.SharedSystemClient.clear_system_cache()
-        chroma_client = chromadb.PersistentClient(path="./chroma_db")
+        #chromadb.api.client.SharedSystemClient.clear_system_cache()
+        #chroma_client = chromadb.PersistentClient(path="./chroma_db")
         embeddings = OpenAIEmbeddings()
         pdf_path= self.returnfilepath()   # get the file path
         texts = DocumentProcessor.load_pdf(pdf_path)
@@ -221,7 +220,8 @@ class CodeReviewer:
         Processing C++ guideline document into chunks...
         '''
         chunks = DocumentProcessor.process_document(texts)
-        vector_store = Chroma.from_documents(chunks,embeddings, persist_directory="./chroma_db")
+        #vector_store = Chroma.from_documents(chunks,embeddings, persist_directory="./chroma_db")
+        vector_store = FAISS.from_documents(chunks, embeddings)
         retriever = vector_store.as_retriever()
         st.success("✅ Vector store has been created.")
         st.success("✅ RAG pipeline setup completed.")
