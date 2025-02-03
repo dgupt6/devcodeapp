@@ -4,6 +4,7 @@ regex==2023.12.25
 streamlit
 langchain
 langchain-openai
+langchain-anthropic
 langchain-community
 langchain-chroma
 chromadb
