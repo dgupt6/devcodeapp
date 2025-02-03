@@ -2,7 +2,7 @@ pdfplumber==0.11.4
 pandas==2.2.3
 regex==2023.12.25
 streamlit==1.41.1
-chromadb==0.6.3
+chromadb
 langchain==0.3.17
 langchain-core==0.3.33
 langchain-text-splitters==0.3.5
