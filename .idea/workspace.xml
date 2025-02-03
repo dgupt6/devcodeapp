@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ae3d232-220c-4659-b487-1cf309c82dca" name="Changes" comment="added the email list for kau">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-    </list>
+    <list default="true" id="6ae3d232-220c-4659-b487-1cf309c82dca" name="Changes" comment="code review file" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,7 +27,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/devrajgupta/Documents/Devraj/Learning/Git/devcodeapp",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -94,7 +91,31 @@
       <option name="project" value="LOCAL" />
       <updated>1737932835266</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="code review file">
+      <option name="closed" value="true" />
+      <created>1738624074682</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1738624074682</updated>
+    </task>
+    <task id="LOCAL-00007" summary="code review file">
+      <option name="closed" value="true" />
+      <created>1738624093648</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1738624093648</updated>
+    </task>
+    <task id="LOCAL-00008" summary="code review file">
+      <option name="closed" value="true" />
+      <created>1738624245348</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1738624245348</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -113,6 +134,7 @@
     <MESSAGE value="corrected the email list" />
     <MESSAGE value="corrected the email list for kau" />
     <MESSAGE value="added the email list for kau" />
-    <option name="LAST_COMMIT_MESSAGE" value="added the email list for kau" />
+    <MESSAGE value="code review file" />
+    <option name="LAST_COMMIT_MESSAGE" value="code review file" />
   </component>
 </project>
