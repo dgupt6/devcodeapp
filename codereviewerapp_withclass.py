@@ -13,6 +13,7 @@ from langchain.chains import create_retrieval_chain
 from langchain_anthropic import ChatAnthropic
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.vectorstores import FAISS
+import time
 
 class Config:
     CHUNK_SIZE = 200
@@ -202,7 +203,6 @@ class CodeReviewer:
         return prompt
 
     def returnfilepath(self):
-        # pdf_path = "/Users/devrajgupta/Downloads/" + filename + ".pdf"
         filename = "C++ Core Guidelines.pdf"  # PDF file name
         pdf_path = os.path.join(os.path.dirname(__file__), filename)  # Construct path relative to script location
         if not os.path.exists(pdf_path):
@@ -211,8 +211,6 @@ class CodeReviewer:
 
         return pdf_path
     def setup_vector_store(self):
-        #chromadb.api.client.SharedSystemClient.clear_system_cache()
-        #chroma_client = chromadb.PersistentClient(path="./chroma_db")
         embeddings = OpenAIEmbeddings()
         pdf_path= self.returnfilepath()   # get the file path
         texts = DocumentProcessor.load_pdf(pdf_path)
@@ -220,7 +218,6 @@ class CodeReviewer:
         Processing C++ guideline document into chunks...
         '''
         chunks = DocumentProcessor.process_document(texts)
-        #vector_store = Chroma.from_documents(chunks,embeddings, persist_directory="./chroma_db")
         vector_store = FAISS.from_documents(chunks, embeddings)
         retriever = vector_store.as_retriever()
         st.success("✅ Vector store has been created.")
@@ -235,7 +232,15 @@ class CodeReviewer:
 
 class StreamlitApp:
     def __init__(self):
-        st.title("📝 Welcome to AI-Powered C++ Code Reviewer using RAG")
+        st.title("📝 Welcome to AI-Powered C++ Code Reviewer using RAG/FAISS")
+        progress_text = "Operation in progress. Please wait."
+        my_bar = st.progress(0, text=progress_text)
+
+        for percent_complete in range(100):
+            time.sleep(0.01)
+            my_bar.progress(percent_complete + 1, text=progress_text)
+        time.sleep(1)
+        my_bar.empty()
         self.reviewer = CodeReviewer()
 
     def run(self):
