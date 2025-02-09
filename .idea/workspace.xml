@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ae3d232-220c-4659-b487-1cf309c82dca" name="Changes" comment="added progress bar">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    <list default="true" id="6ae3d232-220c-4659-b487-1cf309c82dca" name="Changes" comment="stock app updated">
       <change beforePath="$PROJECT_DIR$/streamlit_ETFweb.py" beforeDir="false" afterPath="$PROJECT_DIR$/streamlit_ETFweb.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -191,7 +189,23 @@
       <option name="project" value="LOCAL" />
       <updated>1738629949050</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="stock app updated">
+      <option name="closed" value="true" />
+      <created>1739131713910</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1739131713910</updated>
+    </task>
+    <task id="LOCAL-00019" summary="stock app updated">
+      <option name="closed" value="true" />
+      <created>1739131727874</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1739131727874</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -213,6 +227,7 @@
     <MESSAGE value="code review file" />
     <MESSAGE value="updated the req" />
     <MESSAGE value="added progress bar" />
-    <option name="LAST_COMMIT_MESSAGE" value="added progress bar" />
+    <MESSAGE value="stock app updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="stock app updated" />
   </component>
 </project>
