@@ -1,7 +1,7 @@
 import streamlit as st
 import yfinance as yf
 
-# Set the title of the app
+# Set the title of the stock app
 st.title('Stock Market Data Visualization')
 
 # Sidebar for user input
