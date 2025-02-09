@@ -15,3 +15,4 @@ hnswlib
 python-dotenv
 requests
 faiss-cpu
+yfinance
