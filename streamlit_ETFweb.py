@@ -29,6 +29,7 @@ def get_stockdata():
         historical_data = stock_data.history(period=duration)
         if historical_data.empty:
             st.error(f"No data found for the ticker symbol: **{ticker}**. Please enter a valid ticker.")
+            return None
         else:
             historical_data.reset_index(inplace=True)
 
@@ -52,6 +53,7 @@ def get_stockdata():
 
     except Exception as e:
         st.error(f"Error: The ticker symbol is invalid or data is unavailable. Please enter a valid ticker.")
+        return None
 
 
 def visualize_and_display(stockresults):
@@ -91,7 +93,8 @@ def visualize_and_display(stockresults):
 
 def stockapp_run():
     stock_results= get_stockdata()
-    visualize_and_display(stock_results)
+    if stock_results is not None:
+        visualize_and_display(stock_results)
 
 if __name__ == '__main__':
     stockapp_run()
