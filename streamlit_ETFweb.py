@@ -1,3 +1,9 @@
+# ---------------------------------------------------------------------------------
+# This program displays historical stock prices of provided stock ticker symbol
+# Developed by Devraj Gupta
+# Revision version : V1.0
+# Date : Feb 9 2025
+# ---------------------------------------------------------------------------------
 import streamlit as st
 import yfinance as yf
 
@@ -14,32 +20,39 @@ def get_user_input():
 
 
 def get_stockdata():
-    ticker, duration = get_user_input()
 
-    # Fetch stock data
-    stock_data = yf.Ticker(ticker)
+    try:
+        ticker, duration = get_user_input()
+        # Fetch stock data
+        stock_data = yf.Ticker(ticker)
+        # Get historical market data
+        historical_data = stock_data.history(period=duration)
+        if historical_data.empty:
+            st.error(f"No data found for the ticker symbol: **{ticker}**. Please enter a valid ticker.")
+        else:
+            historical_data.reset_index(inplace=True)
 
-    # Get historical market data
-    historical_data = stock_data.history(period=duration)
-    historical_data.reset_index(inplace=True)
+        # Get 52-week high and low
+        stock_info = stock_data.info
+        week_52_high = stock_info.get('fiftyTwoWeekHigh', 'N/A')
+        week_52_low = stock_info.get('fiftyTwoWeekLow', 'N/A')
 
-    # Get 52-week high and low
-    stock_info = stock_data.info
-    week_52_high = stock_info.get('fiftyTwoWeekHigh', 'N/A')
-    week_52_low = stock_info.get('fiftyTwoWeekLow', 'N/A')
+        # Get dividends
+        dividends = stock_data.get_dividends()
 
-    # Get dividends
-    dividends = stock_data.get_dividends()
+        stockdata_dict = {}
+        stockdata_dict['ticker'] = ticker
+        stockdata_dict['duration'] = duration
+        stockdata_dict['historical_data'] = historical_data
+        stockdata_dict['week_52_high'] = week_52_high
+        stockdata_dict['week_52_low'] = week_52_low
+        stockdata_dict['dividends'] = dividends
 
-    stockdata_dict = {}
-    stockdata_dict['ticker'] = ticker
-    stockdata_dict['duration'] = duration
-    stockdata_dict['historical_data'] = historical_data
-    stockdata_dict['week_52_high'] = week_52_high
-    stockdata_dict['week_52_low'] = week_52_low
-    stockdata_dict['dividends'] = dividends
+        return stockdata_dict
 
-    return stockdata_dict
+    except Exception as e:
+        st.error(f"Error: The ticker symbol is invalid or data is unavailable. Please enter a valid ticker.")
+
 
 def visualize_and_display(stockresults):
 
@@ -77,8 +90,8 @@ def visualize_and_display(stockresults):
     )
 
 def stockapp_run():
-    stockresults= get_stockdata()
-    visualize_and_display(stockresults)
+    stock_results= get_stockdata()
+    visualize_and_display(stock_results)
 
 if __name__ == '__main__':
     stockapp_run()
