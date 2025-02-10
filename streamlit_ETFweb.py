@@ -20,7 +20,7 @@ def get_user_input():
 
 
 def get_stockdata():
-
+    stockdata_dict = {}
     try:
         ticker, duration = get_user_input()
         # Fetch stock data
@@ -29,7 +29,7 @@ def get_stockdata():
         historical_data = stock_data.history(period=duration)
         if historical_data.empty:
             st.error(f"No data found for the ticker symbol: **{ticker}**. Please enter a valid ticker.")
-            return None
+            return stockdata_dict  # return empty dictionary
         else:
             historical_data.reset_index(inplace=True)
 
@@ -41,7 +41,6 @@ def get_stockdata():
         # Get dividends
         dividends = stock_data.get_dividends()
 
-        stockdata_dict = {}
         stockdata_dict['ticker'] = ticker
         stockdata_dict['duration'] = duration
         stockdata_dict['historical_data'] = historical_data
@@ -53,7 +52,7 @@ def get_stockdata():
 
     except Exception as e:
         st.error(f"Error: The ticker symbol is invalid or data is unavailable. Please enter a valid ticker.")
-        return None
+        return stockdata_dict  # return empty dictionary
 
 
 def visualize_and_display(stockresults):
@@ -93,7 +92,7 @@ def visualize_and_display(stockresults):
 
 def stockapp_run():
     stock_results= get_stockdata()
-    if stock_results is not None:
+    if stock_results:
         visualize_and_display(stock_results)
 
 if __name__ == '__main__':
