@@ -5,7 +5,7 @@
 # Date : Feb 10 2025
 # ---------------------------------------------------------------------------------
 import streamlit as st
-import openai
+from openai import OpenAI
 import pdfplumber
 from docx import Document
 from io import BytesIO
@@ -34,7 +34,7 @@ if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 else:
     # Create an OpenAI client.
-    client = openai.OpenAI(api_key=openai_api_key)
+    client = OpenAI(api_key=openai_api_key)
 
     # File uploader for PDF, TXT, and DOCX files
     uploaded_file = st.file_uploader(
