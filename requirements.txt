@@ -16,3 +16,5 @@ python-dotenv
 requests
 faiss-cpu
 yfinance
+docx
+python-docx
