@@ -1,8 +1,8 @@
 # ---------------------------------------------------------------------------------
 # This program answers questions from the uploaded document
 # Developed by Devraj Gupta
-# Revision version : V1.0
-# Date : Feb 10 2025
+# Revision version : V1.1
+# Date : Feb 12 2025
 # ---------------------------------------------------------------------------------
 import streamlit as st
 from openai import OpenAI
@@ -22,7 +22,7 @@ st.write(
 st.sidebar.header('User Input ')
 
 # Ask user for their OpenAI API key via `st.text_input`.
-openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
+input_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
 # About section
 st.sidebar.header('About')
 st.sidebar.info(
@@ -30,11 +30,15 @@ st.sidebar.info(
     "\n"
     "Contact Devraj Gupta for suggestions/improvements!!"
 )
-if not openai_api_key:
+if not input_api_key:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 else:
+    if input_api_key.upper() == 'DEFAULT':
+        OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY")
+    else:
+        OPENAI_API_KEY = input_api_key
     # Create an OpenAI client.
-    client = OpenAI(api_key=openai_api_key)
+    client = OpenAI(api_key=OPENAI_API_KEY)
 
     # File uploader for PDF, TXT, and DOCX files
     uploaded_file = st.file_uploader(

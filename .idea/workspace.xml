@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ae3d232-220c-4659-b487-1cf309c82dca" name="Changes" comment="added OpenAI">
+    <list default="true" id="6ae3d232-220c-4659-b487-1cf309c82dca" name="Changes" comment="added documentQA">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/streamlit_documentQA.py" beforeDir="false" afterPath="$PROJECT_DIR$/streamlit_documentQA.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -273,7 +273,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739253233564</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="added documentQA">
+      <option name="closed" value="true" />
+      <created>1739253621471</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1739253621471</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -300,6 +308,7 @@
     <MESSAGE value="added correct error handling." />
     <MESSAGE value="added docx requirement" />
     <MESSAGE value="added OpenAI" />
-    <option name="LAST_COMMIT_MESSAGE" value="added OpenAI" />
+    <MESSAGE value="added documentQA" />
+    <option name="LAST_COMMIT_MESSAGE" value="added documentQA" />
   </component>
 </project>
