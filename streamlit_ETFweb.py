@@ -14,7 +14,7 @@ st.title('Stock Market Data Visualization')
 st.sidebar.header('User Input Parameters')
 
 def get_user_input():
-    ticker = st.sidebar.text_input('Enter Stock Ticker', 'PLTR')
+    ticker = st.sidebar.text_input('Enter Stock Ticker', 'VOO')
     duration = st.sidebar.selectbox('Select Duration', ['5d', '1d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'])
     return ticker, duration
 

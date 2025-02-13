@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ae3d232-220c-4659-b487-1cf309c82dca" name="Changes" comment="added V1.1">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="6ae3d232-220c-4659-b487-1cf309c82dca" name="Changes" comment="added annualized return and analyst recommendation">
       <change beforePath="$PROJECT_DIR$/streamlit_ETFweb.py" beforeDir="false" afterPath="$PROJECT_DIR$/streamlit_ETFweb.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -289,7 +288,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739411310890</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="added annualized return and analyst recommendation">
+      <option name="closed" value="true" />
+      <created>1739424824103</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1739424824103</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -318,6 +325,7 @@
     <MESSAGE value="added OpenAI" />
     <MESSAGE value="added documentQA" />
     <MESSAGE value="added V1.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="added V1.1" />
+    <MESSAGE value="added annualized return and analyst recommendation" />
+    <option name="LAST_COMMIT_MESSAGE" value="added annualized return and analyst recommendation" />
   </component>
 </project>
