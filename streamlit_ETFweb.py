@@ -1,8 +1,8 @@
 # ---------------------------------------------------------------------------------
 # This program displays historical stock prices of provided stock ticker symbol
 # Developed by Devraj Gupta
-# Revision version : V1.0
-# Date : Feb 9 2025
+# Revision version : V1.1
+# Date : Feb 12 2025
 # ---------------------------------------------------------------------------------
 import streamlit as st
 import yfinance as yf
@@ -38,15 +38,37 @@ def get_stockdata():
         week_52_high = stock_info.get('fiftyTwoWeekHigh', 'N/A')
         week_52_low = stock_info.get('fiftyTwoWeekLow', 'N/A')
 
+        # Get 3-year and 5-year returns
+        try:
+            three_year_return = stock_info.get('threeYearAverageReturn', 'N/A')
+            five_year_return = stock_info.get('fiveYearAverageReturn', 'N/A')
+        except Exception as e:
+            three_year_return = 'N/A'
+            five_year_return = 'N/A'
+            st.warning(f"3-year and 5-year return data is not available for **{ticker}**.")
+
+        # Get analyst recommendations
+        try:
+            #recommendations = stock_data.get_recommendations_summary()
+            recommendations = stock_data.recommendations
+            if recommendations is not None and not recommendations.empty:
+                recommendations = recommendations.reset_index()  # Reset index for better display
+        except Exception as e:
+            recommendations = 'N/A'
+            #st.warning("No analyst recommendations available for this ticker.")
+
         # Get dividends
-        dividends = stock_data.get_dividends()
+        #dividends = stock_data.get_dividends()
+        #stockdata_dict['dividends'] = dividends
 
         stockdata_dict['ticker'] = ticker
         stockdata_dict['duration'] = duration
         stockdata_dict['historical_data'] = historical_data
         stockdata_dict['week_52_high'] = week_52_high
         stockdata_dict['week_52_low'] = week_52_low
-        stockdata_dict['dividends'] = dividends
+        stockdata_dict['three_year_return'] = three_year_return
+        stockdata_dict['five_year_return'] = five_year_return
+        stockdata_dict['recommendations'] = recommendations
 
         return stockdata_dict
 
@@ -65,6 +87,17 @@ def visualize_and_display(stockresults):
     st.write(f"- **52-Week High:** {stockresults['week_52_high']}")
     st.write(f"- **52-Week Low:** {stockresults['week_52_low']}")
 
+    # Display 3-year and 5-year returns
+    st.subheader('Annualized Returns (Only for ETFs)')
+    if stockresults['three_year_return'] != 'N/A':
+        st.write(f"- **3-Year Return:** {stockresults['three_year_return']:.2%}")
+    else:
+        st.write("- **3-Year Return:** Not available")
+    if stockresults['five_year_return'] != 'N/A':
+        st.write(f"- **5-Year Return:** {stockresults['five_year_return']:.2%}")
+    else:
+        st.write("- **5-Year Return:** Not available")
+
     # Plot the stock prices using Streamlit's native line chart
     historicaldatalocal = stockresults['historical_data']
     st.subheader('Stock Price Chart')
@@ -76,9 +109,17 @@ def visualize_and_display(stockresults):
     st.subheader('Historical Data')
     st.write(historicaldatalocal)
 
+
+    # Display analyst recommendations
+    st.subheader('Analyst Recommendations')
+    if stockresults['recommendations'] is not None and not stockresults['recommendations'].empty:
+        st.write(stockresults['recommendations'])
+    else:
+        st.write("No analyst recommendations available for this ticker.")
+
     # Display dividends
-    st.subheader('Dividends')
-    st.write(stockresults['dividends'])
+    #st.subheader('Dividends')
+    #st.write(stockresults['dividends'])
 
     st.write("🚀 Built with Streamlit | Feb 2025 V1.0 | Devraj Gupta")
 
@@ -97,5 +138,3 @@ def stockapp_run():
 
 if __name__ == '__main__':
     stockapp_run()
-
-
