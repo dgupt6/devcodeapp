@@ -4,7 +4,11 @@
 #Cloned with Git
 # In terminal do : streamlit run webreadBillpdf.py
 # CTRL-C to stop the app in terminal (  mac os)
-
+########################################################################
+# -----------Mod log -------------                                     #
+# Date      : Sept 2 2025                    Author: Devraj Gupta      #
+# Revision 1: Added change to support new line for kids watch addition.#
+########################################################################
 import pdfplumber
 import pandas as pd
 import re
@@ -36,15 +40,12 @@ def extract_bill_summary(pdf_path):
 
     # Refined regex to extract Account and line-level details
     account_pattern = re.compile(r"Account\s+\$([\d\.]+)\s+-\s+\$([\d\.]+)\s+\$([\d\.]+)")
-    # line_pattern = re.compile(r"\((\d{3})\)\s(\d{3})-(\d{4})\s(\w+)\s\$([\d\.]+)(?:\s\$([\d\.]+))?(?:\s\$([\d\.]+))?(?:\s\$([\d\.]))")
-    # line_pattern = re.compile(
-    #    r"\((\d{3})\)\s(\d{3})-(\d{4})\s(\w+)\s\$([\d\.]+)\s(?:\$([\d\.]+))?\s(?:\$([\d\.]+))?\s(?:\$([\d\.]+))")
 
-    # line_pattern = re.compile(r"\((\d{3})\)\s(\d{3})-(\d{4})\s(\w+)\s\$([\d\.]+)\s(?:\$([\d\.]+))?\s(?:\$([\d\.]+))?")
+    #line_pattern = re.compile(
+    #    r"\((\d{3})\)\s(\d{3})-(\d{4})\s(\w+)\s\$([\d\.]+)(?:\s\$([\d\.]+))?(?:\s\$([\d\.]+))?(?:\s\$([\d\.]+))?")
 
-    line_pattern = re.compile(
-        r"\((\d{3})\)\s(\d{3})-(\d{4})\s(\w+)\s\$([\d\.]+)(?:\s\$([\d\.]+))?(?:\s\$([\d\.]+))?(?:\s\$([\d\.]+))?")
-
+    line_pattern_new = re.compile(
+        r"\((\d{3})\)\s(\d{3})-(\d{4})(?:\s-\sNew)?\s+([A-Za-z]+(?:\s[A-Za-z]+)*)\s\$([\d\.]+)(?:\s\$([\d\.]+))?(?:\s\$([\d\.]+))?(?:\s\$([\d\.]+))?")
     # Extract Total bill amount
     totals_pattern = re.compile(r"Totals\s+\$([\d\.]+)\s+\$([\d\.]+)\s+\$([\d\.]+)\s+\$([\d\.]+)")
     totals_match = totals_pattern.search(summary_text)
@@ -66,7 +67,9 @@ def extract_bill_summary(pdf_path):
         ])
 
     # Extract line-level charges
-    line_matches = line_pattern.findall(summary_text)
+    #line_matches = line_pattern.findall(summary_text)
+    line_matches = line_pattern_new.findall(summary_text)
+
     for match in line_matches:
         phone_number = f"({match[0]}) {match[1]}-{match[2]}"
         line_type = match[3]
@@ -92,11 +95,19 @@ def deriveActualAmt(dflocal):
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(512) 906-6312", "Kaustubhx6312")
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(623) 759-2902", "Atri spousex2902")
     dflocal["Phone Number"] = dflocal["Phone Number"].replace("(623) 986-7834", "Atrix7834")
+    dflocal["Phone Number"] = dflocal["Phone Number"].replace("(737) 287-4083", "Atri Daughterx4083")
+
+    # Change the Kids Watch line charge from Plans to Equipment amount.
+    watchCharge = dflocal.loc[dflocal["Phone Number"] == "Atri Daughterx4083","Plans"]
+    dflocal.loc[dflocal["Phone Number"] == "Atri Daughterx4083","Plans"] = 0.0
+    dflocal.loc[dflocal["Phone Number"] == "Atri Daughterx4083","Equipment"] = watchCharge
 
     ny_rows = dflocal[dflocal['Phone Number'] == 'Account']
     actlvl_charge = float(ny_rows['Total'].to_string(index=False))
 
-    line_charges = dflocal[dflocal["Phone Number"] != "Account"]["Plans"].tolist()
+    mask2 = (dflocal["Phone Number"] != "Atri Daughterx4083") & (dflocal["Phone Number"] != "Account")
+    line_charges = dflocal[mask2]["Plans"].tolist()
+    #line_charges = dflocal[dflocal["Phone Number"] != "Account"]["Plans"].tolist()
 
     sum_linecharges = 0
     num_of_line = 0
@@ -110,7 +121,9 @@ def deriveActualAmt(dflocal):
     perhead_linecharge = round((totalacctandlinecharge / num_of_line), 2)
 
     # Set updated Plan amount
-    dflocal.loc[dflocal["Phone Number"] != "Account", "Plans"] = perhead_linecharge
+    mask3 = (dflocal["Phone Number"] != "Atri Daughterx4083") & (dflocal["Phone Number"] != "Account")
+    dflocal.loc[mask3, "Plans"] = perhead_linecharge
+    #dflocal.loc[dflocal["Phone Number"] != "Account", "Plans"] = perhead_linecharge
 
     dflocal["Individual amount"] = dflocal[["Plans", "Equipment", "Services"]].sum(axis=1)
 
