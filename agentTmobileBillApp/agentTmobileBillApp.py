@@ -22,6 +22,7 @@ import pandas as pd
 import streamlit as st
 
 from webreadBillpdf import deriveActualAmt, validateAndSend
+from tmobile_bill_agent import bill_store
 from tmobile_bill_agent.llm_providers import PROVIDERS, LLMClient, LLMError, list_ollama_models
 from tmobile_bill_agent.extraction_agent import (
     run_bill_agent, validate_table, to_derive_frame, balance_cents)
@@ -157,9 +158,67 @@ def adjustment_editor(calculated, statement_total):
                          "Individual amount": edited["Final amount"].round(2)})
 
 
+def month_picker(key):
+    """Year + month selectors -> 'YYYY-MM'."""
+    today = pd.Timestamp.today()
+    col1, col2, _ = st.columns([1, 1, 3])
+    year = col1.selectbox("Bill year", range(today.year, today.year - 6, -1), key=f"{key}_y")
+    month = col2.selectbox("Bill month", range(1, 13), index=today.month - 1, key=f"{key}_m",
+                           format_func=lambda m: pd.Timestamp(2000, m, 1).strftime("%B"))
+    return f"{year}-{month:02d}"
+
+
+def history_page():
+    st.subheader("📅 Historical T-Mobile bills")
+    totals = bill_store.list_totals()
+    if totals.empty:
+        st.info("No bills saved yet. Analyze a bill and use 'Save to history' in section 5.")
+    else:
+        st.markdown("**Total bill amount per month**")
+        st.dataframe(totals, hide_index=True, use_container_width=True,
+                     column_config={"Total": st.column_config.NumberColumn(format="$%.2f")})
+
+        month = st.selectbox("View per line details for", totals["Month"][::-1])
+        st.dataframe(bill_store.load_lines(month), hide_index=True, use_container_width=True,
+                     column_config={c: st.column_config.NumberColumn(format="$%.2f")
+                                    for c in AMOUNT_COLS + ["Individual amount"]})
+        if st.button(f"Delete {month} from history"):
+            bill_store.delete_month(month)
+            st.rerun()
+
+        st.markdown("**Fluctuation in total bill amount**")
+        if len(totals) < bill_store.MIN_MONTHS_FOR_CHART:
+            st.info(f"Need at least {bill_store.MIN_MONTHS_FOR_CHART} months of data to plot a trend "
+                    f"({len(totals)} saved so far).")
+        else:
+            st.line_chart(totals.set_index("Month")["Total"])
+            change = totals["Total"].diff().iloc[-1]
+            st.caption(f"Latest month vs previous: {change:+.2f}  |  average ${totals['Total'].mean():.2f}"
+                       f"  |  min ${totals['Total'].min():.2f}  |  max ${totals['Total'].max():.2f}")
+            if st.checkbox("Show per line trend"):
+                st.line_chart(bill_store.per_line_history())
+
+    st.divider()
+    st.markdown("**Backup / restore**")
+    st.caption("Streamlit Cloud storage is not permanent: the database can be reset when the app "
+               "restarts or redeploys. Download a backup regularly and restore it here if needed.")
+    if os.path.exists(bill_store.DB_PATH):
+        with open(bill_store.DB_PATH, "rb") as file:
+            st.download_button("Download history backup (.db)", file.read(), "bill_history.db")
+    restore = st.file_uploader("Restore from backup (.db) -- replaces current history", type=["db"])
+    if restore and st.button("Restore backup"):
+        with open(bill_store.DB_PATH, "wb") as file:
+            file.write(restore.getvalue())
+        st.rerun()
+
+
 if __name__ == "__main__":
     st.set_page_config(page_title="Agent T-Mobile Bill Analyzer", layout="wide")
     st.title("🤖 Agent T-Mobile Bill Analyzer ( Devraj Gupta )")
+    page = st.sidebar.radio("View", ["Analyze new bill", "Bill history"])
+    if page == "Bill history":
+        history_page()
+        st.stop()
     provider, model, api_key, max_attempts = llm_sidebar()
 
     st.write("Upload the T-mobile bill file; an LLM agent extracts the per line charges.")
@@ -243,3 +302,13 @@ if __name__ == "__main__":
         st.warning("Email recipients not configured: add to_address_list and main_address_list "
                    "to config.json (local) or to the app's Secrets (Streamlit Cloud).")
     validateAndSend(finalDF, totalBill, sumofindividualamt)
+
+    # ---- 5. Save to history (SQLite)
+    st.subheader("5. Save to history")
+    month = month_picker("save")
+    overwrite = bill_store.month_exists(month)
+    if overwrite:
+        st.caption(f"{month} is already saved; saving again replaces it.")
+    if st.button("Replace saved bill" if overwrite else "Save to history"):
+        bill_store.save_bill(month, totalBill, bill_df, finalDF)
+        st.success(f"Saved {month} to history.")
